@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>투두리스트</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    rel="stylesheet">
+</head>
+<body>
+    <style>
+*{background-color: powderblue;}
+body {
+  caret-color: #11eaf1;
+  color: #4028da;
+
+}
+
+#todolist {
+  text-align: left;
+  max-width: 1500px;
+  margin: auto;
+  background: linear-gradient(135deg, #09e0e7, #a609e4);
+}
+
+.main__title {
+  margin: 0px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  text-align: center;
+  color: black;
+}
+
+.main__title h1 {
+  margin-bottom: 5px;
+}
+
+.input__section {
+  margin: auto;
+}
+
+.input__section form {
+  margin: 0px 70px 0px 70px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.item {
+  width: 300px;
+  height: 30px;
+  border-radius: 15px;
+  border: 1px solid #63c1e6;
+  padding: 0px 30px;
+}
+
+*:focus {
+  outline: none;
+}
+
+.input__button {
+  background-color: transparent;
+  font-size: 30px;
+  line-height: 60px;
+  margin-left: 5px;
+  color: white;
+  border: 0;
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  align-items: center;
+  text-align: center;
+  margin: 8px 60px;
+  padding: 4px 8px;
+  border: none;
+  background: rgba(22, 167, 211, 0);
+}
+.close:hover {
+  background: linear-gradient(135deg, #06dbf3, #5b0bee);
+  border-radius: 100%;
+  color: white;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 110px;
+  background: rgb(154, 227, 240);
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+ul li:hover {
+  background: #ddd;
+}
+
+ul li.checked {
+  background: #ddd;
+  color: #272341;
+  text-decoration: line-through;
+}
+
+ul li.checked::before {
+  content: "";
+  position: absolute;
+  border-color: #272341;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 13px;
+  left: 80px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    margin: 0;
+  }
+  #todolist {
+    max-width: 100%;
+  }
+
+  .input__section form {
+    margin: 0px 30px 5px 30px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .item {
+    width: 200px;
+    height: 30px;
+    border-radius: 15px;
+    border: 1px solid #fbe7c6;
+    padding: 0px 30px;
+  }
+
+  .close {
+    position: absolute;
+    align-items: center;
+    text-align: center;
+    margin: 8px 15px;
+    padding: 4px 8px;
+    border: none;
+    background: rgba(25, 235, 137, 0);
+  }
+}
+    </style>
+<div id="todolist">
+    <div class="main__title">
+        <h1>To Do List</h1>
+    </div>
+
+    <div class="input__section">
+        <form>
+            <div>
+                <input type = "text" class = "item" autofocus="true">
+            </div>
+            <div>
+                <button type = "button" class="input__button"><i class="fas fa-plus-circle"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <div class="item__list"></div>
+
+</div>
+
+    <script>
+'use strict';
+
+let itemList = [];
+let inputButton = document.querySelector(".input__button");
+inputButton.addEventListener("click", addItem);
+
+
+function addItem() {
+    let item = document.querySelector(".item").value;
+    if (item != null) {
+        itemList.push(item);
+        document.querySelector(".item").value = "";
+        document.querySelector(".item").focus();
+    }
+
+    showList();
+}
+
+
+function showList() {
+    let list = "<ul>"
+    for (let i = 0; i <itemList.length; i++) {
+        list += "<li>" + itemList[i] + "<span class='close' id=" + i + ">" + "\u00D7" + "</span></li>";
+    }
+    list += "</ul>";
+    document.querySelector(".item__list").innerHTML = list;
+
+
+    let deleteButtons = document.querySelectorAll(".close");
+    for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener("click", deleteItem);
+    }
+
+}
+
+function deleteItem() {
+    let id = this.getAttribute("id");
+    itemList.splice(id, 1);
+    showList();
+}
+
+
+let list = document.querySelector('.item__list');
+list.addEventListener('click', function(event) {
+  if (event.target.tagName === 'LI') {
+    event.target.classList.toggle('checked');
+  }
+}, false);
+    </script>
+</body>
+</html>
